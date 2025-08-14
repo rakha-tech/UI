@@ -1,0 +1,42 @@
+/* Hide the real system cursor */
+html,
+body {
+  cursor: none;
+  margin: 0;
+  height: 100%;
+  background: #111;
+}
+
+/* The main cursor (the glowing “head”) */
+#comet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 12px #fff, 0 0 24px #fff, 0 0 6px 2px #0ff, 0 0 20px 10px #f0f;
+  transition: transform 0.08s ease;
+}
+
+/* A reusable particle */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  animation: fade 0.8s forwards;
+}
+@keyframes fade {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
