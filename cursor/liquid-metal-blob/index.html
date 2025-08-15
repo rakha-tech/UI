@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Liquid-Metal Blob Cursor</title>
+
+    <!-- ==========  CSS  ========== -->
+    <style>
+      html,
+      body {
+        cursor: none;
+        margin: 0;
+        height: 100%;
+        background: #1a1a1a;
+        overflow: hidden;
+      }
+
+      /* The main blob */
+      #blob {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #e0e0e0, #666);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.35),
+          0 0 20px rgba(255, 255, 255, 0.15);
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: width 0.15s ease, height 0.15s ease;
+        filter: blur(0.5px);
+      }
+
+      /* Ripple on click */
+      .ripple {
+        position: fixed;
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        animation: expand 0.6s ease-out forwards;
+      }
+      @keyframes expand {
+        0% {
+          transform: translate(-50%, -50%) scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(4);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ==========  HTML  ========== -->
+    <div id="blob"></div>
+
+    <!-- ==========  JS  ========== -->
+    <script>
+      const blob = document.getElementById("blob");
+      let lastX = 0,
+        lastY = 0;
+
+      /* Smooth follow + stretch & squash */
+      window.addEventListener("mousemove", (e) => {
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
+        const angle = Math.atan2(dy, dx);
+        const speed = Math.min(Math.hypot(dx, dy), 40); // cap for sanity
+
+        const stretchX = 1 + speed * 0.015;
+        const stretchY = 1 - speed * 0.015;
+
+        blob.style.left = `${e.clientX}px`;
+        blob.style.top = `${e.clientY}px`;
+        blob.style.transform = `
+    translate(-50%,-50%)
+    rotate(${angle}rad)
+    scale(${stretchX}, ${stretchY})
+  `;
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+      });
+
+      /* Ripple on click */
+      window.addEventListener("mousedown", (e) => {
+        const r = document.createElement("div");
+        r.classList.add("ripple");
+        r.style.left = `${e.clientX}px`;
+        r.style.top = `${e.clientY}px`;
+        document.body.appendChild(r);
+        r.addEventListener("animationend", () => r.remove());
+      });
+    </script>
+  </body>
+</html>
