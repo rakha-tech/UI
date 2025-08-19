@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login v2.0 – Neon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg: #0d0d0d;
+        --card: #111118;
+        --accent: #00f9ff;
+        --accent2: #ff00ff;
+        --text: #ffffff;
+        --error: #ff3333;
+        --success: #00ff88;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+      body,
+      html {
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+      }
+      #themeToggle {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: 2px solid var(--accent);
+        color: var(--accent);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        z-index: 10;
+      }
+      .neon-card {
+        position: relative;
+        width: 380px;
+        max-width: 90vw;
+        padding: 50px 40px;
+        background: var(--card);
+        border-radius: 18px;
+        box-shadow: 0 0 25px var(--accent), 0 0 50px var(--accent2) inset;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+      }
+      .neon-card:hover {
+        transform: rotateX(4deg) rotateY(-4deg);
+      }
+      h1 {
+        margin-bottom: 8px;
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      p {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+      }
+      .input-box {
+        position: relative;
+        margin-bottom: 28px;
+      }
+      .input-box input {
+        width: 100%;
+        padding: 14px 16px;
+        background: none;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: var(--text);
+        outline: none;
+        transition: 0.3s;
+      }
+      .input-box label {
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        color: #666;
+        transition: 0.3s;
+        pointer-events: none;
+      }
+      .input-box input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 10px var(--accent);
+      }
+      .input-box input:focus + label,
+      .input-box input:not(:placeholder-shown) + label {
+        top: -8px;
+        left: 10px;
+        font-size: 0.75rem;
+        color: var(--accent);
+      }
+      .togglePw {
+        position: absolute;
+        right: 16px;
+        top: 15px;
+        cursor: pointer;
+        color: #aaa;
+        font-size: 1.1rem;
+      }
+      .strength-meter {
+        height: 3px;
+        border-radius: 3px;
+        background: #222;
+        margin-top: 6px;
+        overflow: hidden;
+      }
+      .strength-meter div {
+        height: 100%;
+        width: 0%;
+        transition: 0.3s;
+      }
+      button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        color: #000;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      button::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: translate(-50%, -50%);
+        transition: 0.6s;
+      }
+      button:active::after {
+        width: 300px;
+        height: 300px;
+      }
+      button.loading {
+        pointer-events: none;
+        filter: saturate(0.3);
+      }
+      button.success {
+        background: var(--success);
+      }
+      button.error {
+        background: var(--error);
+      }
+      .fingerprint {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border: 1px solid #444;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .fingerprint:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .error-msg {
+        color: var(--error);
+        font-size: 0.8rem;
+        height: 16px;
+        margin-top: 4px;
+      }
+      .signup {
+        margin-top: 25px;
+        font-size: 0.85rem;
+        text-align: center;
+        color: #aaa;
+      }
+      .signup a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      .signup a:hover {
+        text-decoration: underline;
+      }
+      @media (max-width: 480px) {
+        .neon-card {
+          padding: 40px 25px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="grid"></canvas>
+    <button id="themeToggle">🌙</button>
+
+    <div class="neon-card">
+      <div class="fingerprint" id="finger" title="Biometric login">👆</div>
+      <h1>Cyber Login</h1>
+      <p>Enter the grid</p>
+
+      <form id="form">
+        <div class="input-box">
+          <input type="email" id="email" placeholder=" " required />
+          <label>Email</label>
+        </div>
+
+        <div class="input-box">
+          <input
+            type="password"
+            id="pw"
+            placeholder=" "
+            required
+            minlength="4"
+          />
+          <label>Password</label>
+          <span class="togglePw" id="togglePw">👁</span>
+          <div class="strength-meter"><div id="strengthBar"></div></div>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <button id="btn" type="submit">Log In</button>
+      </form>
+
+      <div class="signup">No account? <a href="#">Register here</a></div>
+    </div>
+
+    <script>
+      /* ---------- Neon Grid Background ---------- */
+      const cv = document.getElementById("grid"),
+        ctx = cv.getContext("2d");
+      let cols, rows;
+      function resize() {
+        cv.width = innerWidth;
+        cv.height = innerHeight;
+        cols = Math.floor(cv.width / 30);
+        rows = Math.floor(cv.height / 30);
+      }
+      addEventListener("resize", resize);
+      resize();
+      function drawGrid() {
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        ctx.strokeStyle = "rgba(0,249,255,.15)";
+        ctx.lineWidth = 1;
+        for (let x = 0; x < cols; x++) {
+          for (let y = 0; y < rows; y++) {
+            ctx.beginPath();
+            ctx.arc(x * 30, y * 30, 1, 0, Math.PI * 2);
+            ctx.stroke();
+            if (x < cols - 1) {
+              ctx.moveTo(x * 30, y * 30);
+              ctx.lineTo((x + 1) * 30, y * 30);
+              ctx.stroke();
+            }
+            if (y < rows - 1) {
+              ctx.moveTo(x * 30, y * 30);
+              ctx.lineTo(x * 30, (y + 1) * 30);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+      drawGrid();
+      setInterval(drawGrid, 2000);
+
+      /* ---------- Day / Night toggle ---------- */
+      const toggle = document.getElementById("themeToggle");
+      toggle.onclick = () => {
+        document.body.classList.toggle("light");
+        const root = document.documentElement.style;
+        if (document.body.classList.contains("light")) {
+          root.setProperty("--bg", "#ffffff");
+          root.setProperty("--card", "#f4f4f8");
+          root.setProperty("--text", "#111");
+          toggle.textContent = "☀️";
+        } else {
+          root.setProperty("--bg", "#0d0d0d");
+          root.setProperty("--card", "#111118");
+          root.setProperty("--text", "#ffffff");
+          toggle.textContent = "🌙";
+        }
+      };
+
+      /* ---------- Password strength ---------- */
+      const pw = document.getElementById("pw"),
+        bar = document.getElementById("strengthBar");
+      pw.addEventListener("input", () => {
+        let s = 0;
+        if (pw.value.length > 4) s += 25;
+        if (/[A-Z]/.test(pw.value)) s += 25;
+        if (/[0-9]/.test(pw.value)) s += 25;
+        if (/[^A-Za-z0-9]/.test(pw.value)) s += 25;
+        bar.style.width = s + "%";
+        bar.style.background =
+          s < 50 ? "#ff3333" : s < 75 ? "#ffcc00" : "#00ff88";
+      });
+
+      /* ---------- Show/Hide Password ---------- */
+      document.getElementById("togglePw").onclick = () => {
+        const type =
+          pw.getAttribute("type") === "password" ? "text" : "password";
+        pw.setAttribute("type", type);
+      };
+
+      /* ---------- Form submit ---------- */
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById("btn");
+        btn.classList.add("loading");
+        btn.textContent = "";
+        await new Promise((r) => setTimeout(r, 1800));
+        const ok = Math.random() > 0.3;
+        btn.classList.remove("loading");
+        btn.textContent = ok ? "✓ Success" : "✗ Failed";
+        btn.classList.add(ok ? "success" : "error");
+        if (!ok) {
+          document.getElementById("errorMsg").textContent = "Check credentials";
+        }
+        setTimeout(() => {
+          btn.textContent = "Log In";
+          btn.classList.remove("success", "error");
+          document.getElementById("errorMsg").textContent = "";
+        }, 2000);
+      });
+
+      /* ---------- Fingerprint mock-up ---------- */
+      document.getElementById("finger").onclick = () => {
+        const f = document.getElementById("finger");
+        f.textContent = "✓";
+        f.style.color = "#00ff88";
+        setTimeout(() => {
+          f.textContent = "👆";
+          f.style.color = "";
+        }, 1500);
+      };
+    </script>
+  </body>
+</html>
