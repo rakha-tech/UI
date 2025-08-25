@@ -1,0 +1,48 @@
+html,
+body {
+  cursor: none;
+  margin: 0;
+  height: 100%;
+  background: #0e0e0e;
+  overflow: hidden;
+}
+
+/* Glass sphere */
+#glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px) saturate(150%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 8px 32px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Liquid ripple */
+.ripple {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  margin: -40px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: liquid 0.7s ease-out forwards;
+}
+@keyframes liquid {
+  0% {
+    transform: scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
