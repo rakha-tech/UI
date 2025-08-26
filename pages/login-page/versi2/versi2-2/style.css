@@ -1,0 +1,179 @@
+:root {
+  --bg: #0d0d0d;
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --neon: #00f9ff;
+  --neon2: #ff00ff;
+  --text: #ffffff;
+  --error: #ff3333;
+  --success: #00ff88;
+  --cursor: default;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+body,
+html {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  cursor: var(--cursor);
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 8rem;
+}
+.glass-card {
+  position: relative;
+  width: 380px;
+  max-width: 90vw;
+  padding: 50px 40px;
+  background: var(--glass-bg);
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0, 249, 255, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(18px) saturate(160%);
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.17, 0.84, 0.44, 1);
+}
+h1 {
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, var(--neon), var(--neon2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.sub {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+.field {
+  position: relative;
+  margin-bottom: 28px;
+}
+.field input {
+  width: 100%;
+  padding: 15px 18px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+  backdrop-filter: blur(6px);
+}
+.field label {
+  position: absolute;
+  top: 15px;
+  left: 18px;
+  color: #aaa;
+  transition: 0.3s;
+  pointer-events: none;
+}
+.field input:focus {
+  border-color: var(--neon);
+  box-shadow: 0 0 12px var(--neon);
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: -9px;
+  left: 12px;
+  font-size: 0.75rem;
+  color: var(--neon);
+  background: var(--bg);
+  padding: 0 6px;
+}
+.togglePw {
+  position: absolute;
+  right: 18px;
+  top: 16px;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 1.1rem;
+  transition: 0.3s;
+}
+.togglePw:hover {
+  color: var(--neon);
+}
+.strength-meter {
+  height: 3px;
+  border-radius: 3px;
+  background: #222;
+  margin-top: 6px;
+  overflow: hidden;
+}
+.strength-meter div {
+  height: 100%;
+  width: 0%;
+  transition: 0.3s;
+}
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--neon), var(--neon2));
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+button.loading {
+  pointer-events: none;
+  filter: saturate(0.3);
+}
+button.success {
+  background: var(--success);
+}
+button.error {
+  background: var(--error);
+}
+button:active {
+  transform: scale(0.97);
+}
+.error-msg {
+  color: var(--error);
+  font-size: 0.8rem;
+  height: 16px;
+  margin-top: 4px;
+}
+.signup {
+  margin-top: 25px;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #aaa;
+}
+.signup a {
+  color: var(--neon);
+  text-decoration: none;
+}
+.signup a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 480px) {
+  .glass-card {
+    padding: 40px 25px;
+  }
+}

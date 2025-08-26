@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login v2.1 – Living-Glass</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="particles"></canvas>
+
+    <div class="container">
+      <div class="glass-card" id="card">
+        <h1>Living-Glass Login</h1>
+        <p class="sub">Enter the v2.1 dimension</p>
+
+        <form id="form">
+          <div class="field">
+            <input type="email" id="email" placeholder=" " required />
+            <label>Email</label>
+          </div>
+
+          <div class="field">
+            <input
+              type="password"
+              id="pw"
+              placeholder=" "
+              minlength="4"
+              required
+            />
+            <label>Password</label>
+            <span class="togglePw" id="togglePw">👁</span>
+            <div class="strength-meter"><div id="bar"></div></div>
+          </div>
+
+          <div class="error-msg" id="errorMsg"></div>
+
+          <button id="btn" type="submit">Log In</button>
+        </form>
+
+        <div class="signup">No account? <a href="#">Register</a></div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
