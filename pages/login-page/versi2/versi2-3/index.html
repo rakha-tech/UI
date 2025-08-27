@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login v2.2 – Adaptive Hologram</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="bg"></canvas>
+    <button id="themeToggle">🌙</button>
+
+    <div class="card" id="card">
+      <button id="voiceBtn" title="Voice login">🎤</button>
+      <h1>Adaptive Hologram</h1>
+      <p class="sub">Speak, type, or touch</p>
+
+      <form id="form">
+        <div class="field">
+          <input type="email" id="email" placeholder=" " required />
+          <label>Email</label>
+        </div>
+
+        <div class="field">
+          <input
+            type="password"
+            id="pw"
+            placeholder=" "
+            minlength="4"
+            required
+          />
+          <label>Password</label>
+          <span class="togglePw" id="togglePw">👁</span>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+        <button id="btn" type="submit">Log In</button>
+      </form>
+
+      <div class="signup">No account? <a href="#">Register</a></div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

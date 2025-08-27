@@ -1,0 +1,196 @@
+:root {
+  --bg: #000;
+  --glass: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.18);
+  --accent: #00f9ff;
+  --accent2: #ff00ff;
+  --text: #fff;
+  --err: #ff3333;
+  --ok: #00ff88;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+body,
+html {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+#themeToggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+/* MORPHING HOLOGRAM CARD */
+.card {
+  position: relative;
+  width: 400px;
+  max-width: 90vw;
+  padding: 50px 40px;
+  background: var(--glass);
+  border-radius: 32px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 0 30px var(--accent), inset 0 0 30px var(--accent2) 0%;
+  transition: all 0.4s cubic-bezier(0.17, 0.84, 0.44, 1);
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1);
+}
+.card.morph {
+  border-radius: 48% 52% 70% 30% / 30% 40% 60% 70%;
+  box-shadow: 0 0 50px var(--accent2), inset 0 0 50px var(--accent) 0%;
+}
+h1 {
+  text-align: center;
+  font-size: 1.9rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 5px;
+}
+.sub {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 28px;
+}
+.field input {
+  width: 100%;
+  padding: 16px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+  backdrop-filter: blur(6px);
+}
+.field label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  color: #aaa;
+  transition: 0.3s;
+  pointer-events: none;
+}
+.field input:focus + label,
+.field input:not(:placeholder-shown) + label {
+  top: -9px;
+  left: 12px;
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--bg);
+  padding: 0 6px;
+}
+.togglePw {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+.togglePw:hover {
+  color: var(--accent);
+}
+
+#voiceBtn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--glass);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+#voiceBtn.recording {
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 249, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 249, 255, 0);
+  }
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3s;
+}
+button:active {
+  transform: scale(0.97);
+}
+.error-msg {
+  height: 16px;
+  font-size: 0.8rem;
+  color: var(--err);
+  margin-top: 4px;
+}
+.signup {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+.signup a {
+  color: var(--accent);
+  text-decoration: none;
+}
+@media (max-width: 480px) {
+  .card {
+    padding: 40px 25px;
+  }
+}
