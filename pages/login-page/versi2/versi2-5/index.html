@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login v2.5 – Quantum-Secure Holo-Vault</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="tunnel"></canvas>
+    <div class="lens" id="lens"></div>
+
+    <div class="vault" id="vault">
+      <div class="extra">
+        <button id="webauthnBtn" title="WebAuthn">🔐</button>
+        <button id="nfcBtn" title="Tap NFC card">📲</button>
+        <button id="arBtn" title="Toggle AR lens">🥽</button>
+      </div>
+
+      <h1>Quantum-Secure Holo-Vault</h1>
+      <p class="sub">Choose your reality</p>
+
+      <form id="form">
+        <div class="field">
+          <input type="email" id="email" placeholder=" " required />
+          <label>Email</label>
+        </div>
+
+        <div class="field">
+          <input
+            type="password"
+            id="pw"
+            placeholder=" "
+            minlength="4"
+            required
+          />
+          <label>Password</label>
+          <span class="togglePw" id="togglePw">👁</span>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+        <button id="btn" type="submit">Log In</button>
+      </form>
+
+      <div class="signup">No account? <a href="#">Create one</a></div>
+
+      <div id="quantum">
+        <span></span><span></span><span></span><span></span
+        ><span></span> Quantum key: <span id="qText">generating…</span>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
