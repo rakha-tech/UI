@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Magnetic Pixel Orbit</title>
+    <style>
+      html,
+      body {
+        cursor: none;
+        margin: 0;
+        height: 100%;
+        background: #111;
+        overflow: hidden;
+      }
+
+      /* Core pixel */
+      #core {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 6px;
+        height: 6px;
+        margin: -3px;
+        border-radius: 1px;
+        background: #0ff;
+        box-shadow: 0 0 8px #0ff, 0 0 16px #0ff8;
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      /* Satellites */
+      .sat {
+        position: fixed;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: #fff;
+        pointer-events: none;
+        z-index: 9998;
+        transition: transform 0.12s ease, opacity 0.12s ease;
+      }
+
+      /* Explosion helper */
+      .explode {
+        animation: boom 0.35s ease-out forwards;
+      }
+      @keyframes boom {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--dx), var(--dy)) scale(0);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="core"></div>
+
+    <script>
+      const core = document.getElementById("core");
+      const n = 5; // # satellites
+      const radius = 22; // orbit radius
+      const sats = [];
+
+      // build satellites
+      for (let i = 0; i < n; i++) {
+        const s = document.createElement("div");
+        s.className = "sat";
+        document.body.appendChild(s);
+        sats.push({ el: s, angle: i * ((Math.PI * 2) / n) });
+      }
+
+      let mx = 0,
+        my = 0;
+
+      addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        core.style.left = mx + "px";
+        core.style.top = my + "px";
+
+        // circular orbit
+        sats.forEach((s) => {
+          const x = mx + Math.cos(s.angle) * radius;
+          const y = my + Math.sin(s.angle) * radius;
+          s.el.style.left = x + "px";
+          s.el.style.top = y + "px";
+          s.angle += 0.045; // speed
+        });
+      });
+
+      addEventListener("mousedown", (e) => {
+        sats.forEach((s) => {
+          const dx = (Math.random() - 0.5) * 160;
+          const dy = (Math.random() - 0.5) * 160;
+          s.el.style.setProperty("--dx", dx + "px");
+          s.el.style.setProperty("--dy", dy + "px");
+          s.el.classList.add("explode");
+        });
+        // regroup after animation
+        setTimeout(() => {
+          sats.forEach((s) => s.el.classList.remove("explode"));
+        }, 350);
+      });
+    </script>
+  </body>
+</html>
